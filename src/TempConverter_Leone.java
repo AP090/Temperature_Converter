@@ -19,26 +19,38 @@ public class TempConverter_Leone {
     static DecimalFormat df = new DecimalFormat(".##");
 
     public static void main(String[] args) {
-        // get which metric the user wants to convert into
+        while (true) {
+            try {
+                mainLoop();
+                return;
+            } catch (Error err) {
+                // I'm too lazy to have the user retype just the one error they made
+                // (maybe you can do it?)
+                System.out.println("Whoa an error occured (" + err.getMessage()
+                        + ") while parsing your input!\nType it all again!");
+            }
+        }
+    }
+
+    private static void mainLoop() {
         System.out.println("Would you like to convert to Fahrenheit (F), Celsius (C), or Kelvin (K)?");
         goal = charToTempUnit(sc.next().charAt(0));
 
         System.out.println("Which temperature are you in: F, C, or K?");
         given = charToTempUnit(sc.next().charAt(0));
 
-        // get the value of the temp
         System.out.println("Enter your temperature");
-        double userValue = sc.nextDouble();
+        valueInKelvin = toKelvin(given, sc.nextDouble());
 
-        // call the sorting method
-        // sortingGeneral(wantThisTemp, knowThisTemp, temp);
+        System.out.println("The temperature in " + tempUnitToString(goal) + " is "
+                + df.format(kelvinTo(goal, valueInKelvin)) + " degrees.");
 
-        valueInKelvin = toKelvin(given, userValue);
-
-        System.out.println(kelvinTo(goal, valueInKelvin));
+        if (goal == given) {
+            System.out.println("You didn't need this converter, silly.");
+        }
     }
 
-    public static TempUnit charToTempUnit(char name) {
+    private static TempUnit charToTempUnit(char name) {
         switch (name) {
         case 'f':
         case 'F':
@@ -54,12 +66,12 @@ public class TempConverter_Leone {
         }
     }
 
-    public static double toKelvin(TempUnit currUnit, double currValue) {
+    private static double toKelvin(TempUnit currUnit, double currValue) {
         switch (currUnit) {
         case cUnit:
             return cToK(currValue);
         case fUnit:
-            return kToF(currValue);
+            return fToK(currValue);
         case kUnit:
             return currValue;
         default:
@@ -67,99 +79,46 @@ public class TempConverter_Leone {
         }
     }
 
-    public static double kelvinTo(TempUnit newUnit, double value) {
+    private static String tempUnitToString(TempUnit unit) {
+        switch (unit) {
+        case cUnit:
+            return "celsius";
+        case fUnit:
+            return "fahrenheit";
+        case kUnit:
+            return "kelvin";
+        default:
+            throw new Error("No really, how did we get here?");
+        }
+    }
+
+    private static double kelvinTo(TempUnit newUnit, double value) {
         switch (newUnit) {
         case kUnit:
             return value;
         case cUnit:
             return kToC(value);
         case fUnit:
-            return fToK(value);
+            return kToF(value);
         default:
-            throw new Error("No really, how did we get here?");
+            throw new Error(
+                    "WHAT TYPE OF BUG IS THIS?!? WHAT LOGICAL FLOW OF EVENTS HAD TO HAVE OCCURED FOR THIS BUG TO HAVE OCCURED?!");
         }
     }
 
-    public static void sortingF(char knowThisTemp, double temp) {
-        // finds out which temp is known so it can do conversions and print
-        if (knowThisTemp == 'C' || knowThisTemp == 'c') {
-            System.out.println("The temperature in Fahrenheit is " + df.format(cToF(temp)) + " degrees.");
-        } else if (knowThisTemp == 'K' || knowThisTemp == 'k') {
-            System.out.println("The temperature in Fahrenheit is " + df.format(kToF(temp)) + " degrees.");
-        } else if (knowThisTemp == 'F' || knowThisTemp == 'f') {
-            System.out.println(
-                    "The temperature in Fahrenheit is " + temp + " degrees. You didn't need this converter, silly.");
-        } else {
-            System.out.println("You have entered an invalid value. Please try again");
-            main(new String[0]);
-        }
-
-        // switch (given) {
-        // case cUnit:
-        //     sortingC();
-        //     break;
-        // case fUnit:
-        //     sortingF();
-        //     break;
-        // case kUnit:
-        //     sortingK();
-        //     break;
-        // }
-    }
-
-    public static void sortingC(char knowThisTemp, double temp) {
-        // finds out which temp is known so it can do conversions and print
-        if (knowThisTemp == 'F' || knowThisTemp == 'f') {
-            System.out.println("The temperature in Celsius is " + df.format(fToC(temp)) + " degrees.");
-        } else if (knowThisTemp == 'K' || knowThisTemp == 'k') {
-            System.out.println("The temperature in Celsius is " + df.format(kToC(temp)) + " degrees.");
-        } else if (knowThisTemp == 'C' || knowThisTemp == 'c') {
-            System.out.println(
-                    "The temperature in Celsius is " + temp + " degrees. You didn't need this converter, silly.");
-        } else {
-            System.out.println("You have entered an invalid value. Please try again");
-            main(new String[0]);
-        }
-    }
-
-    public static void sortingK(char knowThisTemp, double temp) {
-        // finds out which temp is known so it can do conversions and print
-        if (knowThisTemp == 'F' || knowThisTemp == 'f') {
-            System.out.println("The temperature in Kelvin is " + df.format(fToK(temp)) + " degrees.");
-        } else if (knowThisTemp == 'C' || knowThisTemp == 'c') {
-            System.out.println("The temperature in Kelvin is " + df.format(cToK(temp)) + " degrees.");
-        } else if (knowThisTemp == 'K' || knowThisTemp == 'k') {
-            System.out.println(
-                    "The temperature in Kelvin is " + temp + " degrees. You didn't need this converter, silly.");
-        } else {
-            System.out.println("You have entered an invalid value. Please try again");
-            main(new String[0]);
-        }
-    }
-
-    // the following process all the conversions
-
-    public static double cToF(double x) {
-        return (x * (9 / 5)) + 32;
-    }
-
-    public static double kToF(double x) {
+    private static double kToF(double x) {
         return (x - 273.15) * 9 / 5 + 32;
     }
 
-    public static double fToC(double x) {
-        return (x - 32) * 5 / 9;
-    }
-
-    public static double kToC(double x) {
+    private static double kToC(double x) {
         return x - 273.15;
     }
 
-    public static double fToK(double x) {
+    private static double fToK(double x) {
         return (x - 32) * 5 / 9 + 273.15;
     }
 
-    public static double cToK(double x) {
+    private static double cToK(double x) {
         return x + 273.15;
     }
 }
