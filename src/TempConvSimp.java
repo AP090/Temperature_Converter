@@ -18,7 +18,7 @@ public class TempConvSimp {
 		knowThisTemp = sc.next().charAt(0);
 		// get the value of the temp
 		System.out.println("Enter your temperature");
-		double temp = sc.nextDouble();
+		temp = sc.nextDouble();
 		// call the sorting method
 		sortingGeneral(wantThisTemp, knowThisTemp, temp);
 	}
