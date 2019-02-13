@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class TempConv {
 
 	public static char wantThisTemp, knowThisTemp;
-	public static double Temp;
+	public static double temp;
 	static Scanner sc = new Scanner(System.in);
 	static DecimalFormat df = new DecimalFormat(".##");
 
@@ -18,7 +18,7 @@ public class TempConv {
 		knowThisTemp = sc.next().charAt(0);
 		// get the value of the temp
 		System.out.println("Enter your temperature");
-		double temp = sc.nextDouble();
+		temp = sc.nextDouble();
 		// call the sorting method
 		sortingGeneral(wantThisTemp, knowThisTemp, temp);
 	}
