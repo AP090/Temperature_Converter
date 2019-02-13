@@ -7,5 +7,7 @@ There are two programs:
     - uses a bunch of value methods for the calculations.
   - "simplified"
     - integrates those calculations into the larger methods.
+  - "Leone"
+    - This other guy's version
 
 I don't know which one is better and need Leone to tell me.
